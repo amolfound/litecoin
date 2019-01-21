@@ -1,3 +1,11 @@
+
+<AMOL> Changes in litecoin core to prevent block downloads and just get txns for experimental purposes
+
+
+
+
+
+
 Litecoin Core integration/staging tree
 =====================================
 
