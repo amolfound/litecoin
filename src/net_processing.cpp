@@ -537,7 +537,7 @@ void FindNextBlocksToDownload(NodeId nodeid, unsigned int count, std::vector<con
                     }
                     return;
                 }
-                vBlocks.push_back(pindex);
+                // Amol::comment vBlocks.push_back(pindex);
                 if (vBlocks.size() == count) {
                     return;
                 }
@@ -1880,6 +1880,12 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             bool fAlreadyHave = AlreadyHave(inv);
             LogPrint(BCLog::NET, "got inv: %s  %s peer=%d\n", inv.ToString(), fAlreadyHave ? "have" : "new", pfrom->GetId());
 
+            // Amol::comment
+            int tmp_masked = inv.type & MSG_TYPE_MASK;
+            if (tmp_masked == MSG_TX) {
+                LogPrintf("GOSSIP INV TX %s %d\n", inv.hash.ToString(), GetTimeMillis());   
+            }
+
             if (inv.type == MSG_TX) {
                 inv.type |= nFetchFlags;
             }
@@ -2120,7 +2126,13 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         vRecv >> ptx;
         const CTransaction& tx = *ptx;
 
+        // Amol::comment
+        LogPrintf("GOSSIP REC TX %s %d\n", tx.GetHash().ToString(), GetTimeMillis());
+
         CInv inv(MSG_TX, tx.GetHash());
+
+
+
         pfrom->AddInventoryKnown(inv);
 
         LOCK2(cs_main, g_cs_orphans);
